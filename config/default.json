@@ -1,0 +1,20 @@
+{
+  "networks": {
+    "mainchain": {
+      "rpc": "http://localhost:8545"
+    },
+    "childchain": {
+      "rpc": "http://localhost:8546"
+    }
+  },
+  "contracts": {
+    "bridge": "",
+    "tokens": [
+      {
+        "root": "", 
+        "child": "",
+        "isErc721": true
+      }
+    ]
+  }
+}
