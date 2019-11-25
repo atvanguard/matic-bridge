@@ -4,6 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "truffle": "truffle",
+    "truffle:compile": "truffle compile",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -20,6 +22,7 @@
     "@openzeppelin/contracts": "^2.4.0",
     "@truffle/hdwallet-provider": "^1.0.26",
     "config": "^3.2.4",
+    "truffle": "^5.1.1",
     "web3": "^1.2.4"
   }
 }
