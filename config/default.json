@@ -7,25 +7,25 @@
       "rpc": "http://localhost:8545"
     }
   },
-  "contracts": {
-    "bridge": "0x018a56656Fb57fd32D574aE0D7F1bc57BB76F90a",
-    "tokens": [
-      {
-        "root": "0x7e5c116E40F15236f24ac35183778A25a74Ce4cf", 
-        "child": "0xD3c5d3985Ca758CbF51b6e0444be231D05bd46C2",
-        "isErc721": false
-      },
-      {
-        "root": "0x62bfC6D274e6AA1f7CBf23970431736bDcCB68bc", 
-        "child": "0x41e97bDa416BA68C740bAAA6ACf2df969Dcfd889",
-        "isErc721": true
-      }
-    ]
-  },
   "bee-q": {
     "redis": {
       "host": "localhost",
       "port": 6379
     }
+  },
+  "contracts": {
+    "tokens": [
+      {
+        "root": "0xbc3A69b82AcaeBCdEa267B21564c91132afc2298",
+        "isErc721": false,
+        "child": "0x3D838fd16ac00c56BF8f296686DFd2A38b506B96"
+      },
+      {
+        "root": "0x56E65b08D4f48e013C773e3202b8F0b51Cd4ED38",
+        "isErc721": true,
+        "child": "0xC831d3c6EBD6e1fa8Ea26efdc76591c13E382FFD"
+      }
+    ],
+    "bridge": "0xDcCAF7dF5f8178340066f937b74fB7AC65029FBe"
   }
 }

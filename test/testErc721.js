@@ -5,8 +5,6 @@ const HDWalletProvider = require("@truffle/hdwallet-provider");
 const crypto = require('crypto');
 
 const BridgeArtifact = require('../build/contracts/Bridge.json')
-const IMaticTokenArtifact = require('../build/contracts/IMaticToken.json')
-const Erc20Artifact = require('../build/contracts/MaticErc20.json')
 const Erc721Artifact = require('../build/contracts/MaticErc721.json')
 
 let web3, childWeb3, bridge
@@ -15,14 +13,11 @@ const gas = 1000000
 describe('Bridge', function() {
   let accounts, alice
 
-  // before(async function() {
-  //   accounts = await web3.eth.getAccounts()
-  //   alice = web3.utils.toChecksumAddress(accounts[1])
-  // })
-
   beforeEach(async function() {
-    web3 = new Web3(new HDWalletProvider(process.env.MAIN_CHAIN_MNEMONIC, config.get('networks.mainchain.rpc'), 0, 2))
-    childWeb3 = new Web3(new HDWalletProvider(process.env.CHILD_CHAIN_MNEMONIC, config.get('networks.childchain.rpc'), 0, 2))
+    // web3 = new Web3(new HDWalletProvider(process.env.MAIN_CHAIN_MNEMONIC, config.get('networks.mainchain.rpc'), 0, 2))
+    // childWeb3 = new Web3(new HDWalletProvider(process.env.CHILD_CHAIN_MNEMONIC, config.get('networks.childchain.rpc'), 0, 2))
+    web3 = new Web3(new Web3.providers.WebsocketProvider('ws://127.0.0.1:8545'));
+    childWeb3 = new Web3(new Web3.providers.WebsocketProvider('ws://127.0.0.1:8545'));
     bridge = new web3.eth.Contract(BridgeArtifact.abi, config.get('contracts.bridge'))
     accounts = await web3.eth.getAccounts()
     alice = web3.utils.toChecksumAddress(accounts[1])
@@ -41,8 +36,13 @@ describe('Bridge', function() {
     await bridge.methods.deposit(rootContract.options.address, tokenId, token.isErc721).send({ from: alice, gas })
     assert.equal(await rootContract.methods.ownerOf(tokenId).call(), bridge.options.address)
 
-    sleep(2 * 1000); // Wait for the bridge to deposit on child
+    await sleep(2 * 1000); // Wait for the bridge to deposit on child
     assert.equal(await childContract.methods.ownerOf(tokenId).call(), alice)
+
+    // burn
+    await childContract.methods.burn(tokenId).send({ from: alice, gas })
+    await sleep(2 * 1000); // Wait for the bridge to deposit on child
+    assert.equal(await rootContract.methods.ownerOf(tokenId).call(), alice)
   });
 });
 
