@@ -21,8 +21,14 @@
   "dependencies": {
     "@openzeppelin/contracts": "^2.4.0",
     "@truffle/hdwallet-provider": "^1.0.26",
+    "bee-queue": "^1.2.2",
+    "bluebird": "^3.7.1",
     "config": "^3.2.4",
+    "redis": "^2.8.0",
     "truffle": "^5.1.1",
     "web3": "^1.2.4"
+  },
+  "devDependencies": {
+    "mocha": "^6.2.2"
   }
 }

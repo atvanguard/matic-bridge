@@ -14,7 +14,7 @@ contract MaticErc721 is ERC721, Ownable {
   }
 
   /**
-   * @dev Emits emit Transfer(address(0), to, tokenId);
+   * @dev Emits Transfer(address(0), to, tokenId);
    */
   function mint(address to, uint256 tokenId) public onlyOwner {
     _mint(to, tokenId);
