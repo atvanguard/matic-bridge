@@ -1,10 +1,16 @@
 const Web3 = require('web3')
-const config = rerequire('config')
+const HDWalletProvider = require('truffle-hdwallet-provider');
+const config = require('config')
 const BridgeArtifact = require('../build/contracts/Bridge.json')
 const IMaticTokenArtifact = require('../build/contracts/IMaticToken.json')
 
 const web3 = new Web3(new HDWalletProvider(process.env.MAIN_CHAIN_MNEMONIC, config.get('networks.mainchain.rpc')))
 const childWeb3 = new Web3(new HDWalletProvider(process.env.CHILD_CHAIN_MNEMONIC, config.get('networks.childchain.rpc')))
+
+let account;
+web3.eth.getAccounts().then((accounts) => {
+  account = accounts[0]
+})
 
 const bridge = new web3.eth.Contract(BridgeArtifact.abi, config.get('contracts.bridge'))
 
@@ -21,6 +27,17 @@ config.get('contracts.tokens').forEach(token => {
   .on('data', event => {
     console.log(event);
     // transfer to user on root chain
+    let sender = event.returnValues.sender
+    let amount = event.returnValues.amount
+    bridge.methods.withdraw(
+      token.root, 
+      amount, 
+      sender, 
+      token.isErc721
+    ).send({
+        from: account,
+        gas: 500000
+    }).then((res) => console.log (res.transactionHash))
   })
 })
 
@@ -32,4 +49,16 @@ bridge.events.Deposit({ fromBlock: 0 })
 .on('data', event => {
   console.log(event);
   // mint on child contract
+  let token = event.returnValues.token
+  let sender = event.returnValues.user
+  let amount = event.returnValues.tokenIdOrAmount
+  
+  rootToChild[token][0].methods.mint(
+    sender,
+    amount
+  ).send({
+    from: account,
+    gas: 500000
+  }).then((res) => console.log (res.transactionHash))
+
 })
