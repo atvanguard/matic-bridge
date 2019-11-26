@@ -7,7 +7,7 @@
     "truffle": "truffle",
     "truffle:compile": "truffle compile",
     "start": "node server/index.js",
-    "mocha": "mocha"
+    "mocha": "mocha  --timeout 0 --exit"
   },
   "repository": {
     "type": "git",
